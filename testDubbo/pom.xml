@@ -41,7 +41,7 @@
 		<site.deploy.url>file:/usr/local/apache-tomcat-7.0.54/webapps/site/${project.artifactId}</site.deploy.url>
 		<!--log4j2升级-->
 		<slf4j.version>1.7.25</slf4j.version>
-		<log4j2.version>2.8.2</log4j2.version>
+		<log4j2.version>2.13.3</log4j2.version>
 	</properties>
 
 	<dependencies>
