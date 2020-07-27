@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<bean id="redisCache" class="org.example.framework.cache.StringRedisCacheImpl">
+		<property name="redisTemplate">
+			<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+				<property name="connectionFactory" ref="jedisConnFactory" />
+			</bean>
+		</property>
+		<property name="fqn" value="${fqn.name}" />
+	</bean>
+
+	<bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<!--1. <property name="hostName" value="INC_SGS_CORE_CNSZ22_REDIS_API_GW" />-->
+		<!--2. <property name="port" value="8080" /> --> 
+		<property name="password" value="${master.pwd}" />
+		<property name="usePool" value="true" />
+		<!-- 单节点的redis加上bean下的1和2、删除password属性、constructor-arg配置即可-->
+		<constructor-arg ref="redisSentinelConfiguration" />
+	</bean>
+	
+	<bean id="redisSentinelConfiguration" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+		<property name="master">
+			<bean class="org.springframework.data.redis.connection.RedisNode">
+				<property name="name" value="${master.name}" />
+			</bean>
+		</property>
+		<property name="sentinels">
+			<set>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg index="0" value="${sentinel.name1}" />
+					<constructor-arg index="1" value="${sentinel.port1}" />
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg index="0" value="${sentinel.name2}" />
+					<constructor-arg index="1" value="${sentinel.port2}" />
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg index="0" value="${sentinel.name3}" />
+					<constructor-arg index="1" value="${sentinel.port3}" />
+				</bean>
+			</set>
+		</property>
+	</bean>
+	
+</beans>

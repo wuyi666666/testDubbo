@@ -1,0 +1,16 @@
+#produce environment
+dubbo.container=spring
+dubbo.application.name=sgs-template
+dubbo.application.owner=698533_xieyichu
+dubbo.registry.address={{dubbo.registry.address}}
+#dubbo.monitor.protocol=registry
+dubbo.protocol.name=dubbo
+dubbo.protocol.port=20941
+log4j.file=logs/sgs-gateway-api.log
+log4j.level=WARN
+
+dubbo.trace.flag=true
+dubbo.threadpool.mointor=true
+#dubbo.monitor.protocol=registry
+#dubbo.callreport.model=local
+#dubbo.param.flag=true
